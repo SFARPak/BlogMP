@@ -1,0 +1,121 @@
+{{!-- This is a partial file used to generate a post "card"
+which templates loop over to generate a list of posts. --}}
+
+<article class="post-card {{post_class}}{{#match @custom.feed_layout "Classic"}}{{#is "home"}}{{#has index="0"}} post-card-large{{/has}}{{#has index="1,2"}} dynamic{{/has}}{{/is}}{{/match}}{{#match @custom.feed_layout "Grid"}} keep-ratio{{/match}}{{#match @custom.feed_layout "List"}}{{^is "tag, author"}} post-card-large{{/is}}{{/match}}{{#unless access}} post-access-{{visibility}}{{/unless}}">
+
+    {{#if feature_image}}
+    <a class="post-card-image-link" href="{{url}}">
+
+        {{!-- This is a responsive image, it loads different sizes depending on device
+        https://medium.freecodecamp.org/a-guide-to-responsive-images-with-ready-to-use-templates-c400bd65c433 --}}
+        <img class="post-card-image"
+            srcset="{{img_url feature_image size="s"}} 300w,
+                    {{img_url feature_image size="m"}} 600w,
+                    {{img_url feature_image size="l"}} 1000w,
+                    {{img_url feature_image size="xl"}} 2000w"
+            sizes="(max-width: 1000px) 400px, 800px"
+            src="{{img_url feature_image size="m"}}"
+            alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}"
+            loading="lazy"
+        />
+
+        {{#unless access}}
+        {{^has visibility="public"}}
+            <div class="post-card-access">
+                {{> "icons/lock"}}
+                {{#has visibility="members"}}
+                    Members only
+                {{else}}
+                    Paid-members only
+                {{/has}}
+            </div>
+        {{/has}}
+        {{/unless}}
+
+    </a>
+    {{/if}}
+
+    <div class="post-card-content">
+
+        <a class="post-card-content-link" href="{{url}}">
+            <header class="post-card-header">
+                <div class="post-card-tags">
+                    {{#primary_tag}}
+                        <span class="post-card-primary-tag">{{name}}</span>
+                    {{/primary_tag}}
+                    {{#if featured}}
+                        <span class="post-card-featured">{{> "icons/fire"}} Featured</span>
+                    {{/if}}
+                </div>
+                <h2 class="post-card-title">
+                    {{#unless access}}
+                    {{^has visibility="public"}}
+                        {{#unless feature_image}}
+                            {{> "icons/lock"}}
+                        {{/unless}}
+                    {{/has}}
+                    {{/unless}}
+                    {{title}}
+                </h2>
+            </header>
+            {{#if excerpt}}
+                <div class="post-card-excerpt">{{excerpt}}</div>
+            {{/if}}
+        </a>
+
+        <footer class="post-card-meta">
+            <div class="post-card-author">
+                {{#if primary_author.profile_image}}
+                    <img src="{{primary_author.profile_image}}" alt="{{primary_author.name}}" class="post-card-author-image">
+                {{/if}}
+                <span class="post-card-author-name">{{primary_author.name}}</span>
+            </div>
+            <div class="post-card-stats">
+                <time class="post-card-meta-date" datetime="{{date format="YYYY-MM-DD"}}">{{date format="DD MMM YYYY"}}</time>
+                {{#if reading_time}}
+                    <span class="post-card-meta-length">{{reading_time}} min read</span>
+                {{/if}}
+                {{#if @site.comments_enabled}}
+                    <span class="post-card-comments">{{comment_count}}</span>
+                {{/if}}
+            </div>
+        </footer>
+
+        <div class="post-card-actions">
+            <button class="post-card-action-btn like-btn" data-post-id="{{id}}">
+                <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+                <span class="like-count">0</span>
+            </button>
+            <div class="share-dropdown">
+                <button class="post-card-action-btn share-btn" onclick="toggleShareMenu(this)">
+                    <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+                    </svg>
+                    Share
+                </button>
+                <div class="share-menu">
+                    <button onclick="postToPlatform('twitter', '{{title}}', '{{excerpt}}', '{{url}}')" class="share-option">
+                        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                        Twitter
+                    </button>
+                    <button onclick="postToPlatform('linkedin', '{{title}}', '{{excerpt}}', '{{url}}')" class="share-option">
+                        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        LinkedIn
+                    </button>
+                    <button onclick="postToPlatform('facebook', '{{title}}', '{{excerpt}}', '{{url}}')" class="share-option">
+                        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        Facebook
+                    </button>
+                    <button onclick="postToPlatform('reddit', '{{title}}', '{{excerpt}}', '{{url}}')" class="share-option">
+                        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.283-.822.52-1.741.52-2.627 0-2.21-1.79-4-4-4zm-7.51 3.65a1.25 1.25 0 0 1 1.25-1.25 1.25 1.25 0 0 1 1.25 1.25v.75c0 .687-.563 1.25-1.25 1.25a1.25 1.25 0 0 1-1.25-1.25v-.75zm3.75 3.797c1.39 0 2.573.967 2.91 2.314.254.938-.14 1.904-.861 2.486-.731.586-1.72.586-2.451 0-.721-.582-1.115-1.548-.861-2.486.337-1.347 1.52-2.314 2.91-2.314zm-1.25 4.096c.337 0 .625.288.625.625v1.5c0 .337-.288.625-.625.625a.625.625 0 0 1-.625-.625v-1.5c0-.337.288-.625.625-.625zm6.258-1.25c.69 0 1.25.56 1.25 1.25s-.56 1.25-1.25 1.25-1.25-.56-1.25-1.25.56-1.25 1.25-1.25z"/></svg>
+                        Reddit
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</article>
