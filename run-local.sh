@@ -83,7 +83,7 @@ install_dependencies() {
     if [ -f "frontend/package.json" ]; then
         echo -e "${CYAN}Installing frontend dependencies...${NC}"
         cd frontend
-        npm install
+        npm install --legacy-peer-deps
         cd ..
         echo -e "${GREEN}✅ Frontend dependencies installed${NC}"
     fi
