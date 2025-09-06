@@ -183,6 +183,31 @@ run_test "Check service worker exists" "test -f frontend/public/sw.js" 0
 run_test "Check Docker configuration exists" "test -f frontend/Dockerfile" 0
 run_test "Check deployment script exists" "test -f deploy.sh" 0
 
+echo -e "\n📋 PHASE 7: ADVANCED AI FEATURES TESTS"
+echo "========================================"
+
+# Test Advanced AI features
+test_endpoint "http://localhost:3000/api/ai/summary" "405" "AI Summary API (POST-only endpoint)"
+test_endpoint "http://localhost:3000/api/ai/image" "405" "AI Image Generation API (POST-only endpoint)"
+run_test "Check AI summary API exists" "test -f frontend/src/app/api/ai/summary/route.ts" 0
+run_test "Check AI image generation API exists" "test -f frontend/src/app/api/ai/image/route.ts" 0
+run_test "Check AI Writing Assistant 2.0 context-awareness" "grep -q 'userPosts' frontend/src/app/api/ai/generate/route.ts" 0
+run_test "Check AI Comment Moderation exists" "test -f frontend/src/app/api/ai/moderate/route.ts" 0
+run_test "Check AI Tagging & SEO API exists" "test -f frontend/src/app/api/ai/seo/route.ts" 0
+run_test "Check AI Assistant component exists" "test -f frontend/src/components/AIAssistant.tsx" 0
+
+echo -e "\n📋 PHASE 8: MONETIZATION LAYER TESTS"
+echo "====================================="
+
+# Test Monetization features
+test_endpoint "http://localhost:3000/api/purchase" "401" "Purchase API (requires authentication)"
+run_test "Check Purchase API exists" "test -f frontend/src/app/api/purchase/route.ts" 0
+run_test "Check Purchase model exists" "grep -q 'model Purchase' frontend/prisma/schema.prisma" 0
+run_test "Check Subscription model exists" "grep -q 'model Subscription' frontend/prisma/schema.prisma" 0
+run_test "Check SubscriptionPlan model exists" "grep -q 'model SubscriptionPlan' frontend/prisma/schema.prisma" 0
+run_test "Check Post monetization fields" "grep -q 'isPremium.*Boolean' frontend/prisma/schema.prisma" 0
+run_test "Check User monetization fields" "grep -q 'subscriptionStatus' frontend/prisma/schema.prisma" 0
+
 echo -e "\n📋 DATABASE INTEGRATION TESTS"
 echo "==============================="
 
@@ -222,7 +247,7 @@ echo "  3. Reaction functionality"
 echo "  4. Comment system"
 echo "  5. Search functionality"
 
-echo -e "\n"🎯 TEST SUMMARY"
+echo -e "\n🎯 TEST SUMMARY"
 echo "==============="
 echo "Total Tests: $TOTAL_TESTS"
 echo -e "Passed: ${GREEN}$PASSED_TESTS${NC}"
