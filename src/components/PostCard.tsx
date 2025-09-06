@@ -31,28 +31,27 @@ export function PostCard({ post }: PostCardProps) {
   const [userReactions, setUserReactions] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
 
-  // Define fetchReactions function
-  const fetchReactions = useCallback(async () => {
-    try {
-      const response = await fetch(`/api/reactions?postId=${post.id}`)
-      const data = await response.json()
-      if (response.ok) {
-        setReactions({
-          heart: data.counts.HEART || 0,
-          clap: data.counts.CLAP || 0,
-          fire: data.counts.FIRE || 0
-        })
-        setUserReactions(data.userReactions || [])
-      }
-    } catch (error) {
-      console.error("Error fetching reactions:", error)
-    }
-  }, [post.id])
-
   useEffect(() => {
     // Fetch current reactions and user's reactions
+    const fetchReactions = async () => {
+      try {
+        const response = await fetch(`/api/reactions?postId=${post.id}`)
+        const data = await response.json()
+        if (response.ok) {
+          setReactions({
+            heart: data.counts.HEART || 0,
+            clap: data.counts.CLAP || 0,
+            fire: data.counts.FIRE || 0
+          })
+          setUserReactions(data.userReactions || [])
+        }
+      } catch (error) {
+        console.error("Error fetching reactions:", error)
+      }
+    }
+
     fetchReactions()
-  }, [fetchReactions])
+  }, [post.id])
 
   const handleReaction = async (type: string) => {
     if (!session) {
