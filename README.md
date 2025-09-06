@@ -60,6 +60,20 @@ A comprehensive, production-ready Dev.to clone built with modern web technologie
 - ✅ Caching + CDN for performance
 - ✅ CI/CD pipelines with automated testing
 
+### ✅ Phase 7: Advanced AI Features (COMPLETED)
+- ✅ AI Writing Assistant 2.0 - Context-aware, learns from user's past blogs
+- ✅ AI Summaries - TL;DR at the top of every post
+- ✅ AI Image Generation - Generate blog covers or inline illustrations
+- ✅ AI Comment Moderation - Auto-flag spam, toxicity, or off-topic comments
+- ✅ AI Tagging & SEO Optimization - Suggest categories, tags, and meta descriptions
+
+### ✅ Phase 8: Monetization Layer (COMPLETED)
+- ✅ Premium content system with paywall
+- ✅ Subscription management (Stripe integration ready)
+- ✅ Purchase tracking and revenue analytics
+- ✅ Author earnings dashboard
+- ✅ Premium post creation and management
+
 ## 🌟 Features
 
 ### ✅ Core Features (ALL IMPLEMENTED)
@@ -119,30 +133,50 @@ A comprehensive, production-ready Dev.to clone built with modern web technologie
 
 ### Development Setup
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/devto-clone.git
-   cd devto-clone
-   ```
+#### Option 1: Quick Development (Recommended)
+```bash
+# Clone and start everything automatically
+git clone https://github.com/yourusername/devto-clone.git
+cd devto-clone
 
-2. **Install dependencies**
+# Run the quick development script
+./dev.sh
+```
+
+#### Option 2: Full Control
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/devto-clone.git
+cd devto-clone
+
+# Use the comprehensive runner script
+./run.sh -m development -s all
+
+# Or for specific services
+./run.sh -s frontend    # Frontend only
+./run.sh -s backend     # Backend only
+./run.sh -m test        # Run test suite
+```
+
+#### Option 3: Manual Setup
+1. **Install dependencies**
    ```bash
    cd frontend
    npm install
    ```
 
-3. **Set up environment variables**
+2. **Set up environment variables**
    ```bash
    cp .env.local.example .env.local
    # Edit .env.local with your configuration
    ```
 
-4. **Start development server**
+3. **Start development server**
    ```bash
    npm run dev
    ```
 
-5. **Open your browser**
+4. **Open your browser**
    ```
    http://localhost:3000
    ```
