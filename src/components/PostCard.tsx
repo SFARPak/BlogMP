@@ -1,7 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { useState, useEffect, useCallback } from "react"
+import Image from "next/image"
+import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import { Heart, Hand, Flame, Eye } from "lucide-react"
 
@@ -108,10 +109,12 @@ export function PostCard({ post }: PostCardProps) {
     <article className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       {/* Author Info */}
       <div className="flex items-center mb-4">
-        <img
+        <Image
           className="h-8 w-8 rounded-full mr-3"
           src={post.author.avatar}
           alt={post.author.name}
+          width={32}
+          height={32}
         />
         <div className="flex-1">
           <p className="text-sm font-medium text-gray-900">{post.author.name}</p>
