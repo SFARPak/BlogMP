@@ -1,0 +1,36 @@
+{
+    "name": "dev-timeline",
+    "version": "1.0.0",
+    "description": "A Ghost theme inspired by the DEV Community timeline.",
+    "engines": {
+        "ghost": ">=5.0.0",
+        "ghost-api": "v5"
+    },
+    "scripts": {
+        "dev": "ghost start",
+        "zip": "gulp zip"
+    },
+    "author": {
+        "name": "Roo",
+        "email": "roo@example.com"
+    },
+    "gpm": {
+        "type": "theme",
+        "categories": [
+            "blog"
+        ]
+    },
+    "keywords": [
+        "ghost",
+        "theme",
+        "timeline",
+        "devcommunity"
+    ],
+    "license": "MIT",
+    "devDependencies": {
+        "gulp": "^4.0.2",
+        "gulp-zip": "^5.1.0",
+        "gulp-sass": "^5.1.0",
+        "sass": "^1.56.1"
+    }
+}
